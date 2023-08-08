@@ -1,12 +1,11 @@
+#include "cs50.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-int main(void)
+int main(int argc, string argv[])
 {
-    int p = 1;
-    int x = 2;
-
-    x = 10;
-    p = 12;
-
-    printf("%i %i\n", p, x);
+    if (1 < 5 < 10)
+    {
+        printf("works\n")
+    }
 }

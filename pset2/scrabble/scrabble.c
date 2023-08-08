@@ -10,10 +10,13 @@ void who_win(int x, int y);
 int main(void)
 {
     string p1 = get_string("Player 1: ");
-    string p2 = get_string("Player 2: ");
+    string p2 = get_string("Player 2: ");       
     
-    int p1_score = calculator(lower(p1));
-    int p2_score = calculator(lower(p2));
+    p1 = lower(p1);
+    p2 = lower(p2);
+
+    int p1_score = calculator(p1);
+    int p2_score = calculator(p2);
 
     who_win(p1_score, p2_score);
 }
@@ -22,12 +25,11 @@ string lower(string s)
 {
     for (int i = 0, l = strlen(s); i < l; i++)
     {
-        if (islower(s[i]))
+        if (isupper(s[i]))
         {
             s[i] = tolower(s[i]);
         }
     }
-
     return s;
 }
 
@@ -45,6 +47,7 @@ int calculator(string s)
             score += points[x];
         }
     }
+    return score;
 }
 
 void who_win(int x, int y)
