@@ -4,8 +4,5 @@
 
 int main(int argc, string argv[])
 {
-    if (1 < 5 < 10)
-    {
-        printf("works\n")
-    }
+    printf("Input a %i letter word\n", 8);
 }
