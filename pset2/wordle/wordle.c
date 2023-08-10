@@ -74,7 +74,7 @@ int main(int argc, string argv[])
     bool won = false;
 
     // print greeting, using ANSI color codes to demonstrate
-    // printf(GREEN "This is WORDLE50" RESET "\n");
+    printf(GREEN "This is WORDLE50" RESET "\n");
     printf("You have %i tries to guess the %i-letter word I'm thinking of\n", guesses, wordsize);
 
     // main game loop, one iteration for each guess
@@ -108,7 +108,6 @@ int main(int argc, string argv[])
             break;
         }
     }
-
     // Print the game's result
     if (won == true)
         printf("You won!\n");
