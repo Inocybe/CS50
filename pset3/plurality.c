@@ -98,8 +98,8 @@ void print_winner(void)
 
     for (int i = 0; i < candidate_count; i++)
     {
-        if (high = candidates[i].votes)
-            printf("%s\n", candidates[i].name)
+        if (high == candidates[i].votes)
+            printf("%s\n", candidates[i].name);
     }
     
     return;
