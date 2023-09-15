@@ -2,7 +2,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, string argv[])
+#define MAX 9
+
+typedef struct
 {
-    printf("Input a %i letter word\n", 8);
+    string name;
+    int votes;
+}
+candidate;
+
+candidate candidates[MAX];
+
+int main()
+{
+    printf("%i\n", sizeof(candidates));
 }
