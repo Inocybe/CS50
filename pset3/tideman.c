@@ -119,9 +119,9 @@ void record_preferences(int ranks[])
     for (int i = 0; i < candidate_count; i++)
     {
         //second pointer
-        for (int j = 0; j < candidate_count; j++)
+        for (int j = i + 1; j < candidate_count; j++)
         {
-            preferences[ranks[i]][ranks[j]] = ranks[i]
+            preferences[ranks[i]][ranks[j]]++;
         }
     }
     return;
@@ -130,7 +130,20 @@ void record_preferences(int ranks[])
 // Record pairs of candidates where one is preferred over the other
 void add_pairs(void)
 {
-    // TODO
+    //pointer to sort through first part 2d array
+    for (int i = 0; i < candidate_count; i++)
+    {
+        //pointer to sort through second part 2d array
+        for (int j = 0; j < candidate_count; j++)
+        {
+            if (preferences[i][j] > 0 && preferences[i][j] > preferences[j][i])
+            {
+                pairs[pair_count].winner = i;
+                pairs[pair_count].loser = j;
+                pair_count++;
+            }
+        }
+    }
     return;
 }
 
