@@ -84,7 +84,7 @@ int main(int argc, string argv[])
                 return 3;
             }
         }
-
+        printf("ranks[0] %i, ranks[1] %i\n", ranks[0], ranks[1]);
         record_preferences(ranks);
 
         printf("\n");
@@ -105,7 +105,7 @@ bool vote(int rank, string name, int ranks[])
         //checks each candidate to see if input == name
         if (strcmp(candidates[i], name) == 0)
         {
-            ranks[i] += rank;
+            ranks[rank] = i;
             return true;
         }
     }
@@ -116,7 +116,7 @@ bool vote(int rank, string name, int ranks[])
 void record_preferences(int ranks[])
 {
     //first pointer
-    for (int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < candidate_count - 1; i++)
     {
         //second pointer
         for (int j = i + 1; j < candidate_count; j++)
