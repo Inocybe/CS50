@@ -170,7 +170,6 @@ void sort_pairs(void)
 
             //adding to swap count, if swap count stayed 0, everything is all sorted
             swapCount++;
-
         }
 
         if (swapCount < 1)
