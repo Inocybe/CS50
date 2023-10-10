@@ -105,6 +105,7 @@ bool vote(int rank, string name, int ranks[])
         //checks each candidate to see if input == name
         if (strcmp(candidates[i], name) == 0)
         {
+            //if input == name, update ranks array to rank, then i will be candidate
             ranks[rank] = i;
             return true;
         }
@@ -184,7 +185,10 @@ void sort_pairs(void)
 // Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void)
 {
-    // TODO
+    for (int i = 0; i < candidate_count; i++)
+    {
+        
+    }
     return;
 }
 
