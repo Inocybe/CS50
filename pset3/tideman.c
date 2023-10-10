@@ -84,7 +84,6 @@ int main(int argc, string argv[])
                 return 3;
             }
         }
-        printf("ranks[0] %i, ranks[1] %i\n", ranks[0], ranks[1]);
         record_preferences(ranks);
 
         printf("\n");
@@ -94,6 +93,13 @@ int main(int argc, string argv[])
     sort_pairs();
     lock_pairs();
     print_winner();
+    for (int i = 0; i < pair_count; i++) 
+    {
+        for (int j = 0; j < pair_count; j++)
+        { 
+            printf("Locked Winner%i%i%i\n", i, j, locked[i][j]);
+        }
+    }
     return 0;
 }
 
@@ -185,11 +191,21 @@ void sort_pairs(void)
 // Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void)
 {
-    for (int i = 0; i < candidate_count; i++)
+    for (int i = 0, pc = pair_count - 1; i < pc; i++)
     {
-        
+        //locked in winner over loser for strenght of victory
+        locked[pairs[i].winner][pairs[i].loser] = true;
     }
-    return;
+    
+    //checks to see if first value has pointer to it, if it does, removes that pointer
+    
+    //DOESNT WORK vvvvvvvvvvvvvvvvvv fix!
+
+    /*if (locked[pairs[0].winner][pairs[0].loser] && locked[pairs[pair_count].winner][pairs[pair_count].loser])
+    {
+        locked[pairs[pair_count].winner][pairs[pair_count].loser] = false;
+    }
+    return;*/
 }
 
 // Print the winner of the election
