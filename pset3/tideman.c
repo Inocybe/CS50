@@ -187,28 +187,43 @@ void sort_pairs(void)
     return;
 }
 
+//Cycle will go through candidates and see if it creates a cycle, if it does returns false
+bool Cycle(int winner, int loser)
+{
+    if (locked[loser][winner])
+    {
+        return true;
+    }
+    for (int i = 0; i < candidate_count; i++)
+    {
+        //checks who loser wins over, and if i goes back to the winner, or if anyone i wins over goes back to winner
+        if (locked[loser][i] && Cycle(winner, i))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void)
 {
+    //array to store amount total votes each candidate has 
     for (int i = 0; i < pair_count; i++)
     {
-        //locked in winner over loser for strenght of victory, unless it creates a cycle
-        locked[pairs[i].winner][pairs[i].loser] = true;
+        //if isnt a cycle, it will be true
+        if (!Cycle(pairs[i].winner, pairs[i].loser))
+            locked[pairs[i].winner][pairs[i].loser] = true;
     }
-    for (int i = 0; i < pair_count; i++)
-    {
-        if (locked[pairs[i].winner][pairs[i].loser] && locked[pairs[i].loser][pairs[i].winner])
-        {
-            locked[pairs[i].loser][pairs[i].winner] = false;
-        }
-    }
-
     return;
 }
 
 // Print the winner of the election
 void print_winner(void)
 {
-    // TODO
+    for (int i = 0; i < candidate_count; i++)
+    {
+        
+    }
     return;
 }
