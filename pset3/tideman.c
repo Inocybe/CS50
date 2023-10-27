@@ -149,34 +149,33 @@ void add_pairs(void)
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void)
 {
-    
-    for (int i = 1; i < pair_count; i++)
+    for (int j = 0; j < pair_count; j++)
     {
-        int swapCount = 0;
-        
-        //compares winner strength of one to other to see which one is possible better (bubble sort)
-        if (preferences[pairs[i-1].winner][pairs[i-1].loser] > preferences[pairs[i].winner][pairs[i].loser]) 
-        {
-            //if first value greater then second value, it swaps value
-            int winnerTrack = pairs[i].winner;
-            int loserTrack = pairs[i].loser;
-            
-            //actual swapping
-            pairs[i].winner = pairs[i-1].winner;
-            pairs[i].loser = pairs[i-1].loser;
-            pairs[i-1].winner = winnerTrack;
-            pairs[i-1].loser = loserTrack;
+        bool swap = false;
+        for (int i = 0; i < pair_count; i++) 
+        { 
+            //compares winner strength of one to other to see which one is possible better (bubble sort)
+            if (preferences[pairs[i-1].winner][pairs[i-1].loser] > preferences[pairs[i].winner][pairs[i].loser]) 
+            {
+                //if first value greater then second value, it swaps value
+                int winnerTrack = pairs[i].winner;
+                int loserTrack = pairs[i].loser;
+                
+                //actual swapping
+                pairs[i].winner = pairs[i-1].winner;
+                pairs[i].loser = pairs[i-1].loser;
+                pairs[i-1].winner = winnerTrack;
+                pairs[i-1].loser = loserTrack;
 
-            //adding to swap count, if swap count stayed 0, everything is all sorted
-            swapCount++;
+                //adding to swap count, if swap count stayed 0, everything is all sorted
+                swap = true;
+            }
         }
-
-        if (swapCount < 1)
+        if (!swap)
         {
-            break;
+            return;
         }
-    }
-            
+    }  
     return;
 }
 
