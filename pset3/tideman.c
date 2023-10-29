@@ -148,8 +148,7 @@ void add_pairs(void)
 
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void)
-{
-    
+{   
     for (int i = 1; i < pair_count; i++)
     {
         int swapCount = 0;
@@ -158,14 +157,14 @@ void sort_pairs(void)
         if (preferences[pairs[i-1].winner][pairs[i-1].loser] > preferences[pairs[i].winner][pairs[i].loser]) 
         {
             //if first value greater then second value, it swaps value
-            int winnerTrack = pairs[i].winner;
-            int loserTrack = pairs[i].loser;
+            int winnerTrack = pairs[i-1].winner;
+            int loserTrack = pairs[i-1].loser;
             
             //actual swapping
-            pairs[i].winner = pairs[i-1].winner;
-            pairs[i].loser = pairs[i-1].loser;
-            pairs[i-1].winner = winnerTrack;
-            pairs[i-1].loser = loserTrack;
+            pairs[i-1].winner = pairs[i].winner;
+            pairs[i-1].loser = pairs[i].loser;
+            pairs[i].winner = winnerTrack;
+            pairs[i].loser = loserTrack;
 
             //adding to swap count, if swap count stayed 0, everything is all sorted
             swapCount++;
@@ -173,10 +172,9 @@ void sort_pairs(void)
 
         if (swapCount < 1)
         {
-            break;
+            return;
         }
-    }
-            
+    }     
     return;
 }
 
