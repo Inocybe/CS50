@@ -41,6 +41,20 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
+    RGBTRIPLE blur[height][width];
+    int blurOffset = 1;
+    
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            //for each pixel in this image I shall form a box around it
+            //making sure to check if it will go out of parameters though
+            
+        }
+    }
+
+
     return;
 }
 
