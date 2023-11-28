@@ -41,8 +41,48 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
+
+    RGBTRIPLE blurImage[height][width];
     int blurOffset = 1;
+
+    for (int i = blurOffset; i < width - blurOffset; i++)
+    {
+        for (int j = blurOffset; j < height -  blurOffset; j++)
+        {
+            int averageR = 0;
+            int averageG = 0;
+            int averageB = 0;
+            /*
+            average.rgbtRed = 0x00;
+            average.rgbtGreen = 0x00;
+            average.rgbtBlue = 0x00;
+            */
+
+            for (int x = i - 1, xbox = i + 1; x < xbox; x++)
+            {
+                for (int y = j - 1, ybox = j + 1; y < ybox; y++)
+                {
+                    averageR += image[y][x].rgbtRed;
+                    averageG += image[y][x].rgbtGreen;
+                    averageB += image[y][x].rgbtBlue;
+                }
+            }
+
+            blurImage[j][i].rgbtRed = averageR / 8;
+            blurImage[j][i].rgbtGreen = averageG / 8;
+            blurImage[j][i].rgbtBlue = averageB / 8;
+        }
+    }
+
+    for (int i = blurOffset; i < width - blurOffset; i++)
+    {
+        for (int j = blurOffset; j < height -  blurOffset; j++)
+        {
+            image[j][i] = blurImage[j][i];
+        }
+    }
     
+    /*  *****STARTING OVER******
     for (int i = blurOffset, hb = height - blurOffset; i < hb; i += (blurOffset + 2))
     {
         for (int j = blurOffset, wb = width - blurOffset; j < wb; j += (blurOffset + 2))
@@ -75,32 +115,9 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
                     image[x][y].rgbtBlue = average.rgbtBlue;
                 }
             }
-
-            /*
-            //for each pixel in this image I shall form a box around it
-            //making sure to check if it will go out of parameters though
-            if (i - blurOffset <= 0 || j - blurOffset <= 0 || i + blurOffset >= height || j + blurOffset >= width)
-            {
-                //check for edges 
-            }
-            else
-            {
-                //add all values together around the thing and average them
-                //first forms a box around the pixel, and values yeah
-                for (int x = i - blurOffset, xbox = i + blurOffset; x < xbox; x++)
-                {
-                    for (int y = j - blurOffset, ybox = j + blurOffset; y < ybox; y++)
-                    {
-                        rAverage += image[x][y].rgbtRed;
-                        gAverage += image[x][y].rgbtGreen;
-                        bAverage += image[x][y].rgbtBlue;
-                    }
-                }
-            }
-            */
         }
     }
-
+    */
     return;
 }
 
