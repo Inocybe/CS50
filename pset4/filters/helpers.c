@@ -71,23 +71,23 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             else
             {
                 //first calculate how big to make the left right top and down box to blur
-                int left = blurOffset;
-                int right = blurOffset;
                 int up = blurOffset;
                 int down = blurOffset;
+                int left = blurOffset;
+                int right = blurOffset;
 
-                while (j - left <= 0)
-                    left--;
-                while (j + right >= width)
-                    right--;
                 while (i + up >= height)
                     up--;
                 while (i - down <= 0)
                     down--;
+                while (j - left <= 0)
+                    left--;
+                while (j + right >= width)
+                    right--;
 
-                for (int y = i - left; y < i + right; y++)
+                for (int y = i - down; y < i + up; y++)
                 {
-                    for (int x = j - down; x < j + up   ; x++)
+                    for (int x = j - left; x < j + right   ; x++)
                     {
                         avR += image[y][x].rgbtRed;
                         avG += image[y][x].rgbtGreen;
