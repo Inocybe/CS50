@@ -41,83 +41,79 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-
     RGBTRIPLE blurImage[height][width];
-    int blurOffset = 1;
-
-    for (int i = blurOffset; i < width - blurOffset; i++)
+    int blurOffset = 3;
+    
+    for (int i = 0; i < height; i++)
     {
-        for (int j = blurOffset; j < height -  blurOffset; j++)
+        for (int j = 0; j < width; j++)
         {
-            int averageR = 0;
-            int averageG = 0;
-            int averageB = 0;
-            /*
-            average.rgbtRed = 0x00;
-            average.rgbtGreen = 0x00;
-            average.rgbtBlue = 0x00;
-            */
-
-            for (int x = i - 1, xbox = i + 1; x < xbox; x++)
+            int avR = 0;
+            int avG = 0;
+            int avB = 0;
+            
+            if (i - blurOffset >= 0 && j - blurOffset >= 0 && i + blurOffset <= height && j + blurOffset <= width)
             {
-                for (int y = j - 1, ybox = j + 1; y < ybox; y++)
+                for (int y = i - blurOffset; y < i + blurOffset; y++)
                 {
-                    averageR += image[y][x].rgbtRed;
-                    averageG += image[y][x].rgbtGreen;
-                    averageB += image[y][x].rgbtBlue;
+                    for (int x = j - blurOffset; x < j + blurOffset; x++)
+                    {
+                        avR += image[y][x].rgbtRed;
+                        avG += image[y][x].rgbtGreen;
+                        avB += image[y][x].rgbtBlue;
+                    }
                 }
+
+                avR /= ((blurOffset + blurOffset) * (blurOffset + blurOffset));
+                avG /= ((blurOffset + blurOffset) * (blurOffset + blurOffset));
+                avB /= ((blurOffset + blurOffset) * (blurOffset + blurOffset));
+            }
+            else
+            {
+                //first calculate how big to make the left right top and down box to blur
+                int left = blurOffset;
+                int right = blurOffset;
+                int up = blurOffset;
+                int down = blurOffset;
+
+                while (j - left <= 0)
+                    left--;
+                while (j + right >= width)
+                    right--;
+                while (i + up >= height)
+                    up--;
+                while (i - down <= 0)
+                    down--;
+
+                for (int y = i - left; y < i + right; y++)
+                {
+                    for (int x = j - down; x < j + up   ; x++)
+                    {
+                        avR += image[y][x].rgbtRed;
+                        avG += image[y][x].rgbtGreen;
+                        avB += image[y][x].rgbtBlue;
+                    }
+                }
+
+                avR /= ((left + right) * (up + down));
+                avG /= ((left + right) * (up + down));
+                avB /= ((left + right) * (up + down));
             }
 
-            blurImage[j][i].rgbtRed = averageR / 8;
-            blurImage[j][i].rgbtGreen = averageG / 8;
-            blurImage[j][i].rgbtBlue = averageB / 8;
+            blurImage[i][j].rgbtRed = avR;
+            blurImage[i][j].rgbtGreen = avG;
+            blurImage[i][j].rgbtBlue = avB;
         }
     }
 
-    for (int i = blurOffset; i < width - blurOffset; i++)
+    for (int i = 0; i < height; i++)
     {
-        for (int j = blurOffset; j < height -  blurOffset; j++)
+        for (int j = 0; j < width; j++)
         {
-            image[j][i] = blurImage[j][i];
+            image[i][j] = blurImage[i][j];
         }
     }
     
-    /*  *****STARTING OVER******
-    for (int i = blurOffset, hb = height - blurOffset; i < hb; i += (blurOffset + 2))
-    {
-        for (int j = blurOffset, wb = width - blurOffset; j < wb; j += (blurOffset + 2))
-        {
-            RGBTRIPLE average;
-            average.rgbtRed = 0;
-            average.rgbtGreen = 0;
-            average.rgbtBlue = 0;
-
-            for (int x = i - blurOffset, xbox = i + blurOffset; x < xbox; x++)
-            {
-                for (int y = j - blurOffset, ybox = j + blurOffset; y < ybox; y++)
-                {
-                    average.rgbtRed += image[x][y].rgbtRed;
-                    average.rgbtGreen += image[x][y].rgbtGreen;
-                    average.rgbtBlue += image[x][y].rgbtBlue;
-                }
-            }
-
-            average.rgbtRed = average.rgbtRed / ((blurOffset + 2) * (blurOffset + 2));
-            average.rgbtGreen = average.rgbtGreen / ((blurOffset + 2) * (blurOffset + 2));
-            average.rgbtBlue = average.rgbtBlue / ((blurOffset + 2) * (blurOffset + 2));
-            
-            for (int x = i - blurOffset, xbox = i + blurOffset; x < xbox; x++)
-            {
-                for (int y = j - blurOffset, ybox = j + blurOffset; y < ybox; y++)
-                {
-                    image[x][y].rgbtRed = average.rgbtRed;
-                    image[x][y].rgbtGreen = average.rgbtGreen;
-                    image[x][y].rgbtBlue = average.rgbtBlue;
-                }
-            }
-        }
-    }
-    */
     return;
 }
 
