@@ -42,7 +42,7 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
     RGBTRIPLE blurImage[height][width];
-    int blurOffset = 3;
+    int blurOffset = 20;
     
     for (int i = 0; i < height; i++)
     {
@@ -64,9 +64,11 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
                     }
                 }
 
-                avR /= ((blurOffset + blurOffset) * (blurOffset + blurOffset));
-                avG /= ((blurOffset + blurOffset) * (blurOffset + blurOffset));
-                avB /= ((blurOffset + blurOffset) * (blurOffset + blurOffset));
+                int pixels = (blurOffset + blurOffset) * (blurOffset + blurOffset);
+
+                avR /= pixels;
+                avG /= pixels;
+                avB /= pixels;
             }
             else
             {
@@ -95,9 +97,11 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
                     }
                 }
 
-                avR /= ((left + right) * (up + down));
-                avG /= ((left + right) * (up + down));
-                avB /= ((left + right) * (up + down));
+                int pixels = (left + right) * (up + down);
+
+                avR /= pixels;
+                avG /= pixels;
+                avB /= pixels;
             }
 
             blurImage[i][j].rgbtRed = avR;
