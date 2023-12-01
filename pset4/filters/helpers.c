@@ -160,17 +160,28 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
 
                 for (int x = j - 1; x < j + 2; x++)
                 {
+                    int r = 0;
+                    int g = 0;
+                    int b = 0;
+
+                    if (i - blurOffset <= 0 && j - blurOffset <= 0 && i + blurOffset >= height && j + blurOffset >= width)
+                    {
+                        r = image[y][x].rgbtRed;
+                        g = image[y][x].rgbtGreen;
+                        b = image[y][x].rgbtBlue;
+                    }
+
                     //access values from Gx and Gy arrays I created I need a counter to tell which valeus to access
 
                     //add values of pixel to Gx ints
                     //got equation from https://wikimedia.org/api/rest_v1/media/math/render/svg/283009fe2306c03eff7308aebba2242d8c82cc71 
-                    rGx += ((image[y][x].rgbtRed * x_arrayGx[x_arrayCounter]) * y_arrayGx[y_arrayCounter]);
-                    gGx += ((image[y][x].rgbtGreen * x_arrayGx[x_arrayCounter]) * y_arrayGx[y_arrayCounter]);
-                    bGx += ((image[y][x].rgbtBlue * x_arrayGx[x_arrayCounter]) * y_arrayGx[y_arrayCounter]);
+                    rGx += ((r * x_arrayGx[x_arrayCounter]) * y_arrayGx[y_arrayCounter]);
+                    gGx += ((g * x_arrayGx[x_arrayCounter]) * y_arrayGx[y_arrayCounter]);
+                    bGx += ((b * x_arrayGx[x_arrayCounter]) * y_arrayGx[y_arrayCounter]);
 
-                    rGx += ((image[y][x].rgbtRed * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]); 
-                    gGy += ((image[y][x].rgbtGreen * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]);
-                    bGy += ((image[y][x].rgbtBlue * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]);
+                    rGx += ((r * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]); 
+                    gGy += ((g * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]);
+                    bGy += ((b * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]);
 
                     x_arrayCounter++;
                 }
