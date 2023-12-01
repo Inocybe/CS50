@@ -133,10 +133,14 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
     int y_arrayGy[3] = {1, 0, -1};
     int x_arrayGy[3] = {1, 2, 1};
 
-    for (int i = 1; i < height - 1; i++)
+    for (int i = 0; i < height; i++)
     {
-        for (int j = 1; j < width - 1; j++)
+        for (int j = 0; j < width; j++)
         {
+            int rG;
+            int gG;
+            int bG;
+            
             int rGx = 0;
             int gGx = 0;
             int bGx = 0;
@@ -154,7 +158,7 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                 //counter to x arrays
                 int x_arrayCounter = 0;
 
-                for (int x = i - 1; x < i + 2; x++)
+                for (int x = j - 1; x < j + 2; x++)
                 {
                     //access values from Gx and Gy arrays I created I need a counter to tell which valeus to access
 
@@ -167,23 +171,38 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                     rGx += ((image[y][x].rgbtRed * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]); 
                     gGy += ((image[y][x].rgbtGreen * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]);
                     bGy += ((image[y][x].rgbtBlue * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]);
-                    
-
-
 
                     x_arrayCounter++;
                 }
+
                 y_arrayCounter++;
             }
 
+            //got equation from https://wikimedia.org/api/rest_v1/media/math/render/svg/23ae6772c5f58751fc6014b71d6adafb30a31c79                    
+            rG = sqrt((rGx * rGx) + (rGy * rGy));
+            gG = sqrt((gGx * gGx) + (gGy * gGy));
+            bG = sqrt((bGx * bGx) + (bGy * bGy));
 
+            if (rG > 255)
+                rG = 255;
+            if (gG > 255)
+                gG = 255;
+            if (bG > 255)
+                bG = 255;
+
+            edgeImage[i][j].rgbtRed = rG;
+            edgeImage[i][j].rgbtGreen = gG;
+            edgeImage[i][j].rgbtBlue = bG;
         }
     }
 
-
-
-
-
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            image[i][j] = edgeImage[i][j];
+        }
+    }
 
     return;
 }
