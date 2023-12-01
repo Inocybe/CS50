@@ -164,7 +164,7 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
                     int g = 0;
                     int b = 0;
 
-                    if (i - blurOffset <= 0 && j - blurOffset <= 0 && i + blurOffset >= height && j + blurOffset >= width)
+                    if (y >= 0 && x >= 0 && y + 3 <= height && x + 3 <= width)
                     {
                         r = image[y][x].rgbtRed;
                         g = image[y][x].rgbtGreen;
