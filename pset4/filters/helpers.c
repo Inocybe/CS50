@@ -14,7 +14,7 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
             int red = image[i][j].rgbtRed;
             int green = image[i][j].rgbtGreen;
             int blue = image[i][j].rgbtBlue;
-            int average = (red + green + blue) / 3;
+            int average = (red + green + blue + 1) / 3;
             image[i][j].rgbtRed = average;
             image[i][j].rgbtGreen = average;
             image[i][j].rgbtBlue = average;
@@ -26,14 +26,21 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
 // Reflect image horizontally
 void reflect(int height, int width, RGBTRIPLE image[height][width])
 {
+    RGBTRIPLE holdImage[height][width];
+
     for (int i = 0; i < height; i++)
     {
-        for (int j = 0, w = width / 2; j < w; j++)
+        for (int j = 0, w = width; j < w; j++)
         {
-            //RGBTRIPLE hold = malloc(sizeof(RGBTRIPLE));
-            RGBTRIPLE hold = image[i][j];
-            image[i][j] = image[i][width - j];
-            image[i][width - j] = hold;
+            holdImage[i][j] = image[i][width - j];
+        }
+    }
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            image[i][j] = holdImage[i][j];
         }
     }
     return;
@@ -43,7 +50,7 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
     RGBTRIPLE blurImage[height][width];
-    int blurOffset = 10;
+    int blurOffset = 1;
     
     for (int i = 0; i < height; i++)
     {
@@ -112,7 +119,7 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
     }
 
     for (int i = 0; i < height; i++)
-    {
+    {   
         for (int j = 0; j < width; j++)
         {
             image[i][j] = blurImage[i][j];
@@ -125,85 +132,51 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 // Detect edges
 void edges(int height, int width, RGBTRIPLE image[height][width])
 {
-    RGBTRIPLE edgeImage[height][width];
+    RGBTRIPLE temp[height][width];
 
-    int y_arrayGx[3] = {1, 2, 1};
-    int x_arrayGx[3] = {1, 0, -1};
-
-    int y_arrayGy[3] = {1, 0, -1};
-    int x_arrayGy[3] = {1, 2, 1};
+    int gx[3][3] = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+    int gy[3][3] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
 
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            int rG;
-            int gG;
-            int bG;
-            
-            int rGx = 0;
-            int gGx = 0;
-            int bGx = 0;
+            int gxBlue = 0;
+            int gyBlue = 0;
+            int gxGreen = 0;
+            int gyGreen = 0;
+            int gxRed = 0;
+            int gyRed = 0;
 
-            int rGy = 0;
-            int gGy = 0;
-            int bGy = 0;
-
-            //counter to y arrays 
-            int y_arrayCounter = 0;
-
-            //go threw a box around the chosen pixel and will add to the color values 
-            for (int y = i - 1; y < i + 2; y++)
+            for (int r = -1; r < 2; r++)
             {
-                //counter to x arrays
-                int x_arrayCounter = 0;
-
-                for (int x = j - 1; x < j + 2; x++)
+                for (int c = -1; c < 2; c++)
                 {
-                    int r = 0;
-                    int g = 0;
-                    int b = 0;
-
-                    if (y >= 0 && x >= 0 && y + 3 <= height && x + 3 <= width)
+                    if (i + r < 0 || i + r > height - 1)
                     {
-                        r = image[y][x].rgbtRed;
-                        g = image[y][x].rgbtGreen;
-                        b = image[y][x].rgbtBlue;
+                        continue;
+                    }
+                    if (j + c < 0 || j + c > width - 1)
+                    {
+                        continue;
                     }
 
-                    //access values from Gx and Gy arrays I created I need a counter to tell which valeus to access
-
-                    //add values of pixel to Gx ints
-                    //got equation from https://wikimedia.org/api/rest_v1/media/math/render/svg/283009fe2306c03eff7308aebba2242d8c82cc71 
-                    rGx += ((r * x_arrayGx[x_arrayCounter]) * y_arrayGx[y_arrayCounter]);
-                    gGx += ((g * x_arrayGx[x_arrayCounter]) * y_arrayGx[y_arrayCounter]);
-                    bGx += ((b * x_arrayGx[x_arrayCounter]) * y_arrayGx[y_arrayCounter]);
-
-                    rGx += ((r * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]); 
-                    gGy += ((g * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]);
-                    bGy += ((b * x_arrayGy[x_arrayCounter]) * y_arrayGy[y_arrayCounter]);
-
-                    x_arrayCounter++;
+                    gxBlue += image[i + r][j + c].rgbtBlue * gx[r + 1][c + 1];
+                    gyBlue += image[i + r][j + c].rgbtBlue * gy[r + 1][c + 1];
+                    gxGreen += image[i + r][j + c].rgbtGreen * gx[r + 1][c + 1];
+                    gyGreen += image[i + r][j + c].rgbtGreen * gy[r + 1][c + 1];
+                    gxRed += image[i + r][j + c].rgbtRed * gx[r + 1][c + 1];
+                    gyRed += image[i + r][j + c].rgbtRed * gy[r + 1][c + 1];
                 }
-
-                y_arrayCounter++;
             }
 
-            //got equation from https://wikimedia.org/api/rest_v1/media/math/render/svg/23ae6772c5f58751fc6014b71d6adafb30a31c79                    
-            rG = sqrt((rGx * rGx) + (rGy * rGy));
-            gG = sqrt((gGx * gGx) + (gGy * gGy));
-            bG = sqrt((bGx * bGx) + (bGy * bGy));
+            int blue = round(sqrt(gxBlue * gxBlue + gyBlue * gyBlue));
+            int green = round(sqrt(gxGreen * gxGreen + gyGreen * gyGreen));
+            int red = round(sqrt(gxRed * gxRed + gyRed * gyRed));
 
-            if (rG > 255)
-                rG = 255;
-            if (gG > 255)
-                gG = 255;
-            if (bG > 255)
-                bG = 255;
-
-            edgeImage[i][j].rgbtRed = rG;
-            edgeImage[i][j].rgbtGreen = gG;
-            edgeImage[i][j].rgbtBlue = bG;
+            temp[i][j].rgbtBlue = (blue > 255) ? 255 : blue;
+            temp[i][j].rgbtGreen = (green > 255) ? 255 : green;
+            temp[i][j].rgbtRed = (red > 255) ? 255 : red;
         }
     }
 
@@ -211,7 +184,9 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
     {
         for (int j = 0; j < width; j++)
         {
-            image[i][j] = edgeImage[i][j];
+            image[i][j].rgbtBlue = temp[i][j].rgbtBlue;
+            image[i][j].rgbtGreen = temp[i][j].rgbtGreen;
+            image[i][j].rgbtRed = temp[i][j].rgbtRed;
         }
     }
 
