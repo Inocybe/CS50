@@ -43,11 +43,7 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
     RGBTRIPLE blurImage[height][width];
-<<<<<<< HEAD
     int blurOffset = 10;
-=======
-    int blurOffset = 100;
->>>>>>> 854a7bd2c72de92c4457ac70a9b6bf916d10e32a
     
     for (int i = 0; i < height; i++)
     {
