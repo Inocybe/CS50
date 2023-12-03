@@ -26,106 +26,72 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
 // Reflect image horizontally
 void reflect(int height, int width, RGBTRIPLE image[height][width])
 {
-    RGBTRIPLE holdImage[height][width];
+    RGBTRIPLE temp;
 
     for (int i = 0; i < height; i++)
     {
-        for (int j = 0, w = width; j < w; j++)
+        for (int j = 0; j < width / 2; j++)
         {
-            holdImage[i][j] = image[i][width - j];
+            temp = image[i][j];
+            image[i][j] = image[i][width - j - 1];
+            image[i][width - j - 1] = temp;
         }
     }
-
-    for (int i = 0; i < height; i++)
-    {
-        for (int j = 0; j < width; j++)
-        {
-            image[i][j] = holdImage[i][j];
-        }
-    }
-    return;
 }
 
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-    RGBTRIPLE blurImage[height][width];
     int blurOffset = 1;
-    
+
+    RGBTRIPLE copy[height][width];
+
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            int avR = 0;
-            int avG = 0;
-            int avB = 0;
-            
-            if (i - blurOffset >= 0 && j - blurOffset >= 0 && i + blurOffset <= height && j + blurOffset <= width)
-            {
-                for (int y = i - blurOffset; y < i + blurOffset; y++)
-                {
-                    for (int x = j - blurOffset; x < j + blurOffset; x++)
-                    {
-                        avR += image[y][x].rgbtRed;
-                        avG += image[y][x].rgbtGreen;
-                        avB += image[y][x].rgbtBlue;
-                    }
-                }
-
-                int pixels = (blurOffset + blurOffset) * (blurOffset + blurOffset);
-
-                avR /= pixels;
-                avG /= pixels;
-                avB /= pixels;
-            }
-            else
-            {
-            //first calculate how big to make the left right top and down box to blur
-            int up = blurOffset;
-            int down = blurOffset;
-            int left = blurOffset;
-            int right = blurOffset;
-
-            while (i + up >= height)
-                up--;
-            while (i - down <= 0)
-                down--;
-            while (j - left <= 0)
-                left--;
-            while (j + right >= width)
-                right--;
-
-            for (int y = i - down; y < i + up; y++)
-            {
-                for (int x = j - left; x < j + right   ; x++)
-                {
-                    avR += image[y][x].rgbtRed;
-                    avG += image[y][x].rgbtGreen;
-                    avB += image[y][x].rgbtBlue;
-                }
-            }
-
-            int pixels = (left + right) * (up + down);
-
-            avR /= pixels;
-            avG /= pixels;
-            avB /= pixels;
-            }
-
-            blurImage[i][j].rgbtRed = avR;
-            blurImage[i][j].rgbtGreen = avG;
-            blurImage[i][j].rgbtBlue = avB;
+            copy[i][j] = image[i][j];
         }
     }
 
     for (int i = 0; i < height; i++)
-    {   
+    {
         for (int j = 0; j < width; j++)
         {
-            image[i][j] = blurImage[i][j];
+            float count = 0;
+            int sumR = 0;
+            int sumG = 0;
+            int sumB = 0;
+
+            for (int y = i - blurOffset; y <= (i + blurOffset); y++)
+            {
+                for (int x = j - blurOffset; x <= (j + blurOffset); x++)
+                {
+                    if (y < 0 || y >= height || x < 0 || x >= width)
+                    {
+                        continue;
+                    }
+
+                    RGBTRIPLE temp = image[y][x];
+
+                    sumR += temp.rgbtRed;
+                    sumG += temp.rgbtGreen;
+                    sumB += temp.rgbtBlue;
+
+                    count++;
+                }
+            }
+
+            sumR = round(sumR / count);
+            sumG = round(sumG / count);
+            sumB = round(sumB / count);
+
+            image[i][j].rgbtRed = sumR;
+            image[i][j].rgbtGreen = sumG;
+            image[i][j].rgbtBlue = sumB;
         }
     }
-    
+   
     return;
 }
 
