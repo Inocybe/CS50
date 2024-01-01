@@ -38,7 +38,7 @@ unsigned int hash(const char *word)
     // if table[value] already pointing to a word, make that point to temp then set table[value] to point to temp
     if (table[value] -> next != NULL)
     {
-
+        
     }
 
     // TODO: Improve this hash function
