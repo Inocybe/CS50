@@ -1,6 +1,8 @@
 // Implements a dictionary's functionality
 
 #include <ctype.h>
+#include <stdio.h>
+#include <string.h>
 #include <stdbool.h>
 
 #include "dictionary.h"
@@ -28,14 +30,41 @@ bool check(const char *word)
 // Hashes word to a number
 unsigned int hash(const char *word)
 {
+    node *temp = NULL; // temporary node for data of word to be saved to 
+    int value = toupper(word[0] - 'A');
+
+    temp->word = word; // set temp word to input word
+
+    // if table[value] already pointing to a word, make that point to temp then set table[value] to point to temp
+    if (table[value] -> next != NULL)
+    {
+
+    }
+
     // TODO: Improve this hash function
-    return toupper(word[0]) - 'A';
+    return value;
 }
 
 // Loads dictionary into memory, returning true if successful, else false
 bool load(const char *dictionary)
 {
-    // TODO
+    FILE *dict = fopen(dictionary, "r");
+    if (dict == NULL)
+    {
+        fclose(dict);
+        return false;
+    }
+
+    // word is a temp value that stores the input from dictionary
+    char word[LENGTH + 1]; 
+
+    // writes 1 input from each line of dicitonary then gets the hash of it
+    while (fscanf(dict, "%s", word) == 1)
+    {
+        int index = hash(word);
+    }
+
+    fclose(dict);
     return false;
 }
 
