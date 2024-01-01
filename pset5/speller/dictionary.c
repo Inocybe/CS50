@@ -1,0 +1,123 @@
+// Implements a dictionary's functionality
+
+#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <stdbool.h>
+
+#include "dictionary.h"
+
+// Represents a node in a hash table
+typedef struct node
+{
+    char word[LENGTH + 1];
+    struct node *next;
+} node;
+
+// TODO: Choose number of buckets in hash table
+const unsigned int N = 26;
+
+// Hash table
+node *table[N];
+
+// Returns true if word is in dictionary, else false
+bool check(const char *word)
+{
+    int index = hash(word);
+    
+    node *p = table[index]; // pointer
+
+    while (p->next != NULL)
+    {
+        if (strcasecmp(word, p->word) == 0)
+            return true;
+        else
+            p = p->next;
+    }
+
+    return false;
+}
+
+// Hashes word to a number
+unsigned int hash(const char *word)
+{
+    // TODO: Improve this hash function
+    return toupper(word[0] - 'A');
+}
+
+// Loads dictionary into memory, returning true if successful, else false
+bool load(const char *dictionary)
+{
+    FILE *dict = fopen(dictionary, "r");
+    if (dict == NULL)
+    {
+        return false;
+    }
+
+    // word is a temp value that stores the input from dictionary
+    char word[LENGTH + 1]; 
+
+    node *temp = NULL; // temporary node for data of word to be saved to 
+
+    // writes 1 input from each line of dicitonary then gets the hash of it
+    while (fgets(word, LENGTH + 1, dict))
+    {
+        int index = hash(word);
+
+        temp = (node*)malloc(sizeof(node));
+        strcpy(temp->word, word); // set temp word to input word
+
+        // if table[index] already pointing to a word, make that point to temp then set table[index] to point to temp
+        if (table[index]->next != NULL)
+        {
+            table[index]->next = temp->next;
+        }
+        else
+        {
+            table[index]->next = NULL;
+        }
+    }
+
+    return true;
+}
+
+// Returns number of words in dictionary if loaded, else 0 if not yet loaded
+unsigned int size(void)
+{
+    int counter = 0;
+
+    for (int i = 0; i < N; i++)
+    {
+        node *p = table[i];
+        while (p->next != NULL)
+        {
+            counter++;
+            p = p->next;
+        }
+    }
+
+    return counter;
+}
+
+// Unloads dictionary from memory, returning true if successful, else false
+bool unload(void)
+{
+    node *p = NULL;
+    node *nextAddress = NULL;
+
+    for (int i = 0; i < N; i++)
+    {
+        p = table[i];
+
+        while (p->next != NULL)
+        {
+            nextAddress = p->next;
+
+            free(p);
+        }
+    }
+
+    return true;
+}
