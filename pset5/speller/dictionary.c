@@ -72,11 +72,12 @@ bool load(const char *dictionary)
         // if table[index] already pointing to a word, make that point to temp then set table[index] to point to temp
         if (table[index]->next != NULL)
         {
-            table[index]->next = temp->next;
+            temp->next = table[index]->next;
+            table[index]->next = &temp;
         }
         else
         {
-            table[index]->next = NULL;
+            table[index]->next = &temp;
         }
     }
 
@@ -105,17 +106,19 @@ unsigned int size(void)
 bool unload(void)
 {
     node *p = NULL;
-    node *nextAddress = NULL;
-
+    
     for (int i = 0; i < N; i++)
     {
-        p = table[i];
-
-        while (p->next != NULL)
+        //still items in list to free
+        while (table[i]->next != NULL)
         {
-            nextAddress = p->next;
+            p = table[i]->next;
+            // still links to free
+            while(p->next != NULL)
+                p = p->next;
 
-            free(p);
+            if (p->next == NULL)
+                free(p);
         }
     }
 
