@@ -25,6 +25,7 @@ node *table[N];
 // Returns true if word is in dictionary, else false
 bool check(const char *word)
 {
+    return true;
     int index = hash(word);
     
     node *p = table[index]; // pointer
@@ -71,7 +72,7 @@ bool load(const char *dictionary)
         strcpy(temp->word, word); // set temp word to input word
 
         // if table[index] already pointing to a word, make that point to temp then set table[index] to point to temp
-        if (table[index]->next != NULL)
+        /*if (table[index]->next != NULL)
         {
             temp->next = table[index]->next;
             table[index]->next = temp;
@@ -79,7 +80,7 @@ bool load(const char *dictionary)
         else
         {
             table[index]->next = temp;
-        }
+        }*/
     }
 
     return true;

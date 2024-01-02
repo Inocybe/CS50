@@ -5,7 +5,7 @@
 
 int main(void)
 {
-    char word[2] = {'1', 'I'};
+    char word[2] = {'H', 'I'};
 
     int x = toupper(word[0] - 'A');
 
