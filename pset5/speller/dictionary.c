@@ -17,13 +17,13 @@ typedef struct node
 } node;
 
 // TODO: Choose number of buckets in hash table
-const unsigned int N = 676;
+const unsigned int N = 17576;
 
 // Hash table
 node *table[N];
 
 // Word Count
-int word_count = 0;
+long word_count = 0;
 
 // Returns true if word is in dictionary, else false
 bool check(const char *word)
@@ -82,6 +82,7 @@ bool load(const char *dictionary)
 
         temp->next = table[index];
         table[index] = temp;
+        word_count++;
     }
 
     fclose(dict);
