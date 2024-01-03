@@ -45,7 +45,7 @@ bool check(const char *word)
 unsigned int hash(const char *word)
 {
     // TODO: Improve this hash function
-    return toupper(word[0] - 'A');
+    return (toupper(word[0]) - 'A');
 }
 
 // Loads dictionary into memory, returning true if successful, else false
@@ -54,35 +54,31 @@ bool load(const char *dictionary)
     FILE *dict = fopen(dictionary, "r");
     if (dict == NULL)
     {
+        fclose(dict);
         return false;
     }
 
     // word is a temp value that stores the input from dictionary
-    char word[LENGTH + 1]; 
+    char *word = malloc(sizeof(char) * LENGTH + 1); 
 
     node *temp = NULL; // temporary node for data of word to be saved to 
 
     // writes 1 input from each line of dicitonary then gets the hash of it
-    while (fgets(word, LENGTH + 1, dict))
+    while (fscanf(dict, "%s", word) != EOF)
     {
+        printf("%s\n", word);
         int index = hash(word);
         printf("%i\n", index);
-
+        
         temp = (node*)malloc(sizeof(node));
         strcpy(temp->word, word); // set temp word to input word
 
-        // if table[index] already pointing to a word, make that point to temp then set table[index] to point to temp
-        /*if (table[index]->next != NULL)
-        {
-            temp->next = table[index]->next;
-            table[index]->next = temp;
-        }
-        else
-        {
-            table[index]->next = temp;
-        }*/
+        //temp->next = table[0]->next;
+        //table[0]->next = temp;
     }
+    printf("works\n");
 
+    fclose(dict);
     return true;
 }
 

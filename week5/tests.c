@@ -5,9 +5,13 @@
 
 int main(void)
 {
-    char word[2] = {'H', 'I'};
+    char *word = malloc(sizeof(char) * 2);
+    word[0] = 'A';
+    word[1] = 'b';
 
-    int x = toupper(word[0] - 'A');
+    int x = toupper(word[0]) - 'A';
 
     printf("%i\n", x);
+
+    free(word);
 }
