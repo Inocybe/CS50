@@ -20,15 +20,29 @@ def main():
         dna = file.readline()
 
     # TODO: Find longest match of each STR in DNA sequence
-    
-    
+    dna_profile = [0]
     for i in database[0]:
         if i != "name":
-
-        
+            # dna_profile.append(dna.count(i))
+            dna_profile.append(longest_match(dna, i))
 
     # TODO: Check database for matching profiles
-
+    printIndex = " " 
+        
+    for person in database:
+        counter = 0
+        for i, data in enumerate(person):
+            if i > 0 and int(person[data]) == dna_profile[i]:
+                counter += 1
+        if counter == len(person) - 1:
+            printIndex = person["name"]
+            break
+    
+    if printIndex == " ":
+        print("No match")
+    else:
+        print(printIndex)
+        
     return
 
 
