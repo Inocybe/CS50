@@ -1,0 +1,9 @@
+
+ - If songs.db contained top 100 songs the listener I think
+   that the two colors they'd be, according to the article that was 
+   linked, i'd guess both yellow and orange
+
+
+ - I say a better way of calculating this aura is by looking at
+   the actual words in the music, and the genera, and kinda placing 
+   each song under defferent catagories
