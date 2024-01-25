@@ -20,10 +20,27 @@ SELECT * FROM atm_transactions WHERE account_number IN (SELECT account_number FR
 WHERE person_id IN (SELECT id FROM people 
 WHERE license_plate IN (SELECT license_plate FROM bakery_security_logs
 WHERE year = 2023 AND month = 7 AND day = 28 AND hour = 10 AND activity = 'exit' AND minute < 25))) AND year = 2023 AND month = 7 AND day = 28 AND atm_location = 'Leggett Street'; 
--- selects all transactions the day of robery from people present at it
 
+-- selects all transactions the day of robery from people present at it
 SELECT name FROM people JOIN bank_accounts ON people.id = bank_accounts.person_id
 JOIN atm_transactions ON bank_accounts.account_number = atm_transactions.account_number
 WHERE license_plate IN (SELECT license_plate FROM bakery_security_logs
 WHERE year = 2023 AND month = 7 AND day = 28 AND hour = 10 AND activity = 'exit' AND minute < 25) AND year = 2023 AND month = 7 AND day = 28
-AND atm_location = 'Leggett Street'; -- ***** GETS 4 PEOPLE WHO USED ATM AT LEGGOTT STREET AND WERE PRESENT AT 
+AND atm_location = 'Leggett Street'; -- ***** GETS 4 PEOPLE WHO USED ATM AT LEGGOTT STREET AND LEFT bakery around time of theft
+
+-- selects all calls from people present at atm and robery
+SELECT * FROM phone_calls WHERE caller IN(SELECT phone_number FROM people JOIN bank_accounts ON people.id = bank_accounts.person_id
+JOIN atm_transactions ON bank_accounts.account_number = atm_transactions.account_number
+WHERE license_plate IN (SELECT license_plate FROM bakery_security_logs
+WHERE year = 2023 AND month = 7 AND day = 28 AND hour = 10 AND activity = 'exit' AND minute < 25) AND year = 2023 AND month = 7 AND day = 28
+AND atm_location = 'Leggett Street') AND year = 2023 AND month = 7 AND day = 28; -- gets all phone calls that happened
+-- **** IM GOING TO ASSUME CALLER ONLY MADE 1 PHONE CALL SO PHONE NUMBER == (770) 555-1861 and the person name: Diana
+-- the person who called diana is accomplice -- name is Philip
+
+-- trying to find where missis diana escape too now >:)
+SELECT * FROM flights WHERE year = 2023 AND month = 7 AND day = 29;
+SELECT * FROM flights JOIN passengers ON flights.id = passengers.flight_id WHERE year = 2023 AND month = 7 AND day = 29;
+SELECT * FROM airports WHERE id = (SELECT destination_airport_id FROM flights JOIN passengers ON flights.id = passengers.flight_id 
+WHERE year = 2023 AND month = 7 AND day = 29 AND passport_number = (SELECT passport_number FROM people WHERE name = 'Diana')); -- GET DESTINATION AYYAYAYAYAYA
+
+-- ONE LONG QUERY I WANT TO SEE IF I WILL GET IT RIGHT
