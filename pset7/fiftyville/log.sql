@@ -19,5 +19,11 @@ WHERE year = 2023 AND month = 7 AND day = 28 AND hour = 10 AND activity = 'exit'
 SELECT * FROM atm_transactions WHERE account_number IN (SELECT account_number FROM bank_accounts
 WHERE person_id IN (SELECT id FROM people 
 WHERE license_plate IN (SELECT license_plate FROM bakery_security_logs
-WHERE year = 2023 AND month = 7 AND day = 28 AND hour = 10 AND activity = 'exit' AND minute < 25))) AND year = 2023 AND month = 7 AND day = 28; 
+WHERE year = 2023 AND month = 7 AND day = 28 AND hour = 10 AND activity = 'exit' AND minute < 25))) AND year = 2023 AND month = 7 AND day = 28 AND atm_location = 'Leggett Street'; 
 -- selects all transactions the day of robery from people present at it
+
+SELECT name FROM people JOIN bank_accounts ON people.id = bank_accounts.person_id
+JOIN atm_transactions ON bank_accounts.account_number = atm_transactions.account_number
+WHERE license_plate IN (SELECT license_plate FROM bakery_security_logs
+WHERE year = 2023 AND month = 7 AND day = 28 AND hour = 10 AND activity = 'exit' AND minute < 25) AND year = 2023 AND month = 7 AND day = 28
+AND atm_location = 'Leggett Street'; -- ***** GETS 4 PEOPLE WHO USED ATM AT LEGGOTT STREET AND WERE PRESENT AT 
