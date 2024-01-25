@@ -34,13 +34,13 @@ JOIN atm_transactions ON bank_accounts.account_number = atm_transactions.account
 WHERE license_plate IN (SELECT license_plate FROM bakery_security_logs
 WHERE year = 2023 AND month = 7 AND day = 28 AND hour = 10 AND activity = 'exit' AND minute < 25) AND year = 2023 AND month = 7 AND day = 28
 AND atm_location = 'Leggett Street') AND year = 2023 AND month = 7 AND day = 28; -- gets all phone calls that happened
--- **** IM GOING TO ASSUME CALLER ONLY MADE 1 PHONE CALL SO PHONE NUMBER == (770) 555-1861 and the person name: Diana
+-- **** IM GOING TO ASSUME CALLER ONLY MADE 1 PHONE CALL SO PHONE NUMBER == (770) 555-1861 and the person name: Bruce
 -- the person who called diana is accomplice -- name is Philip
 
 -- trying to find where missis diana escape too now >:)
 SELECT * FROM flights WHERE year = 2023 AND month = 7 AND day = 29;
 SELECT * FROM flights JOIN passengers ON flights.id = passengers.flight_id WHERE year = 2023 AND month = 7 AND day = 29;
 SELECT * FROM airports WHERE id = (SELECT destination_airport_id FROM flights JOIN passengers ON flights.id = passengers.flight_id 
-WHERE year = 2023 AND month = 7 AND day = 29 AND passport_number = (SELECT passport_number FROM people WHERE name = 'Diana')); -- GET DESTINATION AYYAYAYAYAYA
+WHERE year = 2023 AND month = 7 AND day = 29 AND passport_number = (SELECT passport_number FROM people WHERE name = 'Bruce')); -- GET DESTINATION AYYAYAYAYAYA
 
 -- ONE LONG QUERY I WANT TO SEE IF I WILL GET IT RIGHT
