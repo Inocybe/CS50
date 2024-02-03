@@ -1,17 +1,18 @@
-const wrongButtons = document.querySelectorAll("#wrong-button");
-wrongButtons.forEach(button => {
+const buttonChangeTime = 200;
+
+const buttons = document.querySelectorAll(".button");
+buttons.forEach(button => {
     button.addEventListener("click", function() {
         let originalColor = this.style.backgroundColor;
-        this.style.backgroundColor = "red";
+        if (this.id == "correct-button") {
+            this.style.backgroundColor = "green";
+        } else {
+            this.style.backgroundColor = "red";
+        }
+        this.disabled = true;
         setTimeout(() => {
             this.style.backgroundColor = originalColor;
-        }, 2000);
-    });
-});
-
-const correctButtons = document.querySelectorAll("#correct-button");
-correctButtons.forEach(button => {
-    button.addEventListener("click", function() {
-        this.style.backgroundColor = "green";
+            this.disabled = false;
+        }, buttonChangeTime);
     });
 });
