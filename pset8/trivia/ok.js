@@ -16,3 +16,18 @@ buttons.forEach(button => {
         }, buttonChangeTime);
     });
 });
+
+function checkAnswer() {
+    var answer = document.getElementById("userAnswer").value;
+    var correctAnswer = "Three";
+    var button = document.getElementById("submitButton");
+    var result = document.getElementById("result");
+
+    if (answer === correctAnswer) {
+      button.style.backgroundColor = "green";
+      result.textContent = "Correct!";
+    } else {
+      button.style.backgroundColor = "red"; // Optional: Change color to red for incorrect answers
+      result.textContent = "Try again.";
+    }
+  }
